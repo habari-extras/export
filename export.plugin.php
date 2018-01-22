@@ -1,6 +1,9 @@
 <?php
+namespace Habari;
 
-	class SimpleXMLExtended extends SimpleXMLElement
+if ( !defined( 'HABARI_PATH' ) ) { die( 'No direct access' ); }
+
+	class SimpleXMLExtended extends \SimpleXMLElement
 	{
 		public function addCData($nodename, $cdata_text)
 		{
@@ -55,7 +58,7 @@
 			
 				$export = new SimpleXMLExtended( '<?xml version="1.0" encoding="utf-8"?><blog xmlns="http://schemas.habariproject.org/BlogML.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" />' );
 				$export->addAttribute( 'root-url', Site::get_path('habari', true) );
-				$export->addAttribute( 'date-created', HabariDateTime::date_create()->format( DateTime::W3C ) );
+				$export->addAttribute( 'date-created', DateTime::date_create()->format( DateTime::W3C ) );
 				
 				$export->addCData( 'title', Options::get('title') )->addAttribute( 'type', 'text' );
 				$export->addCData( 'sub-title', Options::get('tagline') )->addAttribute( 'type', 'text' );
@@ -81,7 +84,7 @@
 				$channel->title = Options::get('title');
 				$channel->link = Site::get_url( 'habari' );
 				$channel->description = Options::get( 'tagline' );
-				$channel->pubDate = HabariDateTime::date_create()->format( DateTime::RSS );
+				$channel->pubDate = DateTime::date_create()->format( DateTime::RSS );
 				$channel->generator = 'Habari/' . Version::get_habariversion() . '-Export/' . $this->info->version;
 				$channel->{'wp:wxr_version'} = '1.0';
 				$channel->{'wp:base_site_url'} = Site::get_url( 'host' );
@@ -118,7 +121,7 @@
 		
 		private function download ( $xml ) {
 			
-			$timestamp = HabariDateTime::date_create('now')->format('YmdHis');
+			$timestamp = DateTime::date_create('now')->format('YmdHis');
 			
 			$filename = 'habari_' . $timestamp . '.xml';
 			
